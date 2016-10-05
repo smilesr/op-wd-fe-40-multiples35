@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="utf-8"/>
+    <style>
+      html {
+        font-size: 62.5%;
+        height: 100%;
+      } 
+      body,html {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100%;
+        position: relative;
+      }
+      .container {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+      }
+      .paragraphs {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+      }
+      p {
+        width: 33%;
+        text-align: center;
+        font-size: 2rem;
+      }
+
+      form {
+        margin-top: 10rem;
+      }
+      #answer {
+        margin-top: 10rem;
+        font-size: 6rem;
+        color: #1DACD6;
+        position: absolute;
+      }
+      #animate {
+        animation-name: colorchange;
+        animation-duration: 10s;
+      }
+      @keyframes colorchange {
+        0% {color: yellow;}
+        50% {color: orange;}
+        100% {color: red;}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="paragraphs">
+        <p>If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.</p>
+        <p> Enter a number below and this app will show you the sum of all the multiples of 3 or 5 for the number entered: </p>
+      </div>
+      <form>
+        <input type="text" placeholder="Enter number here">
+      </form>
+    </div>
+    <div id="answer">
+      
+    </div>
+    
+    <script>
+      var target = document.querySelector('input');
+      target.addEventListener('keypress',function(e){
+          var key = e.which || e.keyCode;
+        
+          if (key == 13){
+            var response = target.value, answer = theAccumulator(response), answerLocation = document.getElementById('answer'), displayAnswer = answerLocation.innerHTML = answer, answerWidth = parseInt(window.getComputedStyle(answerLocation).width), pos = 0, middle = Math.round(viewportWidth()/2)-(answerWidth/2);
+            console.log("middle is" + middle);
+            answerLocation.style.color = "#1DACD6";
+            target.value = '';
+            e.preventDefault();
+            myMove();
+            function enlarge(){
+              answerLocation.style.fontSize = "12rem";
+              answerLocation.style.color = "#FF033E";
+            };
+            function myMove() {
+          
+              var id = setInterval(frame, 0.5);
+              function frame() {
+                if (pos == middle) {
+                  clearInterval(id);
+                  enlarge();
+                  changeColor();
+                } else {
+                  pos++; 
+                  answerLocation.style.left = pos + "px";
+                }  
+              }
+            }
+          }
+       
+      });
+      function theAccumulator(endValue) {
+        var accumulator = 0, endPoint = parseInt(endValue), i=1;
+
+        for (i; i<endPoint; i++) {
+          
+          if (i % 3 == 0 || i % 5 == 0){
+            accumulator += i;
+          }
+        };
+        return accumulator;
+      };
+
+      function viewportWidth(){
+      var viewportwidth;
+
+      if (typeof window.innerWidth != 'undefined'){
+        viewportwidth = window.innerWidth;
+      }
+
+      else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0){
+         viewportwidth = document.documentElement.clientWidth;
+      }
+      else{
+         viewportwidth = document.getElementsByTagName('body')[0].clientWidth;
+      }
+      
+      return viewportwidth;
+  }
+    function changeColor () {
+      var paragraphsColored = document.querySelector(".paragraphs");
+      paragraphsColored.setAttribute("id", "animate");
+        };
+
+    </script>
+  </body>
+</html>
